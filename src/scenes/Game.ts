@@ -1,24 +1,18 @@
 import Phaser from 'phaser';
 
-export default class CheckersGame extends Phaser.Scene {
+export class CheckersGame extends Phaser.Scene {
   constructor() {
     super('GameScene');
   }
 
   preload() {
-    this.load.image('logo', 'assets/phaser3-logo.png');
+    this.load.image('crown', 'assets/crown.png');
   }
 
   create() {
-    const logo = this.add.image(400, 70, 'logo');
-
-    this.tweens.add({
-      targets: logo,
-      y: 350,
-      duration: 1500,
-      ease: 'Sine.inOut',
-      yoyo: true,
-      repeat: -1
-    });
+    //const logo = this.add.image(400, 70, 'crown');
+    const r1 = this.add.rectangle(0, 0, 200, 200, 0x6666ff);
+    const r2 = this.add.rectangle(100, 100, 400, 400, 0xffffff).setOrigin(0,0);
+    
   }
 }
