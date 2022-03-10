@@ -27,4 +27,4 @@ To test code on your `dist` folder, run `npm serve` and navigate to <http://loca
 
 ## Run the tests
 
-TODO: \<add docs here\>
+All Jest unit tests can be run with `npm run test`.

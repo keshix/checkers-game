@@ -1,4 +1,5 @@
-import { Scene, Tilemaps } from "phaser";
+import { get } from "lodash";
+import { Scene } from "phaser";
 import { COLORS, DIMENSIONS } from "../constants";
 
 export class Piece {
@@ -22,12 +23,13 @@ export class Piece {
         this.isKing = false;
         this.xPosition = 0;
         this.yPosition = 0;
-        this.calcPosition();
+        this.calcAndSetPosition();
     }
 
-    calcPosition() {
+    calcAndSetPosition(): Piece {
         this.xPosition = this.SQUARE_SIZE * this.col + this.HALF_SQUARE_SIZE;
         this.yPosition = this.SQUARE_SIZE * this.row + this.HALF_SQUARE_SIZE;
+        return this;
     }
 
     makeKing() {
@@ -46,6 +48,23 @@ export class Piece {
     move(row:number, col:number) {
         this.row = row;
         this.col = col;
-        this.calcPosition();
+        this.calcAndSetPosition();
+    }
+
+    getPosition() {
+        return {
+            row: this.row, 
+            col: this.col,
+            xPosition: this.xPosition,
+            yPosition: this.yPosition
+        }
+    }
+
+    getColor() {
+        return this.color;
+    }
+
+    getIsKing() {
+        return this.isKing;
     }
 }

@@ -3,6 +3,7 @@ import { COLORS, DIMENSIONS } from "../constants";
 import { Piece } from "./Piece";
 import _ from "lodash";
 
+
 export class Board {
 
     private board: (Piece|null)[][];
@@ -24,13 +25,12 @@ export class Board {
         this.createBoard();
     }
 
-    drawSquares(scene:Scene) {
+    private drawSquares(scene: Scene) {
         scene.add.rectangle(0, 0, DIMENSIONS.WIDTH, DIMENSIONS.HEIGHT, COLORS.DARK_BROWN).setOrigin(0, 0);
 
         const SQUARE_SIZE = DIMENSIONS.SQUARE_SIZE();
 
         this.rows.map(row => {
-
             _.range(row % 2, DIMENSIONS.COLS, 2).map(col => {
                 scene.add.rectangle(
                     row * SQUARE_SIZE, 
@@ -48,10 +48,10 @@ export class Board {
             this.board.push([]);
             this.cols.map(col => {
                 if (col % 2 == ((row +  1) % 2)) {
-                    if (row < 3) {
+                    if (row <= 2) {
                         this.board[row].push(new Piece(row, col, COLORS.WHITE));
                     }
-                    else if (row > 4) {
+                    else if (row >= 5) {
                         this.board[row].push(new Piece(row, col, COLORS.BLACK));
                     }
                     else {

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { Board } from './Board';
+import { Board } from '../controllers/Board';
 
 export class CheckersGame extends Phaser.Scene {
 
