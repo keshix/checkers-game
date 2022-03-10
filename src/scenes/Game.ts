@@ -1,8 +1,13 @@
 import Phaser from 'phaser';
+import { Board } from './Board';
 
 export class CheckersGame extends Phaser.Scene {
+
+  private board: Board;
+
   constructor() {
     super('GameScene');
+    this.board = new Board();
   }
 
   preload() {
@@ -10,9 +15,7 @@ export class CheckersGame extends Phaser.Scene {
   }
 
   create() {
-    //const logo = this.add.image(400, 70, 'crown');
-    const r1 = this.add.rectangle(0, 0, 200, 200, 0x6666ff);
-    const r2 = this.add.rectangle(100, 100, 400, 400, 0xffffff).setOrigin(0,0);
+    this.board.drawBoard(this);
     
   }
 }
