@@ -1,4 +1,5 @@
 import { Board } from "./Board";
+import { Piece } from "./Piece";
 
 test('create a board', () => {
     expect(new Board()).toEqual(
@@ -14,4 +15,10 @@ test('create a board', () => {
             }
         )
     );
+});
+
+test('get a piece from board', () => {
+    const board = new Board();
+    expect(board.getPiece(0, 0)).toBe(null);
+    expect(typeof board.getPiece(0, 1)).toEqual("object");
 });

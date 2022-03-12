@@ -1,17 +1,15 @@
-import { get } from "lodash";
-import { Scene } from "phaser";
-import { COLORS, DIMENSIONS } from "../constants";
+import { Scene } from 'phaser';
+import { COLORS, DIMENSIONS, PIECE_STYLE } from '../constants';
 
 export class Piece {
-    
     private SQUARE_SIZE = DIMENSIONS.SQUARE_SIZE();
     private HALF_SQUARE_SIZE = Math.floor(this.SQUARE_SIZE / 2);
     private PADDING = 10;
-    private OUTLINE = 2;
 
     private row: number;
     private col: number;
     private color: number;
+    private initialColor: number;
     private isKing: boolean;
     private xPosition: number;
     private yPosition: number;
@@ -20,6 +18,7 @@ export class Piece {
         this.row = row;
         this.col = col;
         this.color = color;
+        this.initialColor = color;
         this.isKing = false;
         this.xPosition = 0;
         this.yPosition = 0;
@@ -38,14 +37,14 @@ export class Piece {
 
     drawPiece(scene: Scene) {
         let radius = this.HALF_SQUARE_SIZE - this.PADDING;
-        scene.add.circle(this.xPosition, this.yPosition, radius + this.OUTLINE, COLORS.GREY);
+        scene.add.circle(this.xPosition, this.yPosition, radius + PIECE_STYLE.OUTLINE, COLORS.GREY);
         scene.add.circle(this.xPosition, this.yPosition, radius, this.color);
         if (this.isKing) {
-            scene.add.image(this.xPosition, this.yPosition, 'crown');
+            scene.add.sprite(this.xPosition, this.yPosition, 'crown');
         }
     }
 
-    move(row:number, col:number) {
+    move(row: number, col: number) {
         this.row = row;
         this.col = col;
         this.calcAndSetPosition();
@@ -53,15 +52,27 @@ export class Piece {
 
     getPosition() {
         return {
-            row: this.row, 
+            row: this.row,
             col: this.col,
             xPosition: this.xPosition,
-            yPosition: this.yPosition
-        }
+            yPosition: this.yPosition,
+        };
+    }
+
+    getInitialColor() {
+        return this.initialColor;
     }
 
     getColor() {
         return this.color;
+    }
+
+    setColor(color: number) {
+        return (this.color = color);
+    }
+
+    resetColor() {
+        this.color = this.initialColor;
     }
 
     getIsKing() {
