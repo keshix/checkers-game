@@ -38,4 +38,6 @@ You can do single and double jumps.
 
 When you reach the opposite border you get a king piece which then can also move backwards.
 
+_Tradeoff: Due to complexity a king piece currently can't move longer distances than a normal piece._
+
 You win when your opponent has no pieces anymore. 🏆
