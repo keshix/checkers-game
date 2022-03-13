@@ -1,13 +1,13 @@
 import { Scene } from 'phaser';
 import { COLORS, DIMENSIONS, PIECE_STYLE } from '../constants';
+import { PiecePosition } from '../types/PiecePosition';
 
 export class Piece {
     private SQUARE_SIZE = DIMENSIONS.SQUARE_SIZE();
     private HALF_SQUARE_SIZE = Math.floor(this.SQUARE_SIZE / 2);
     private PADDING = 10;
 
-    private row: number;
-    private col: number;
+    private boardPosition: PiecePosition;
     private color: number;
     private initialColor: number;
     private isKing: boolean;
@@ -15,8 +15,7 @@ export class Piece {
     private yPosition: number;
 
     constructor(row: number, col: number, color: number) {
-        this.row = row;
-        this.col = col;
+        this.boardPosition = {row, col};
         this.color = color;
         this.initialColor = color;
         this.isKing = false;
@@ -26,8 +25,8 @@ export class Piece {
     }
 
     calcAndSetPosition(): Piece {
-        this.xPosition = this.SQUARE_SIZE * this.col + this.HALF_SQUARE_SIZE;
-        this.yPosition = this.SQUARE_SIZE * this.row + this.HALF_SQUARE_SIZE;
+        this.xPosition = this.SQUARE_SIZE * this.boardPosition.col + this.HALF_SQUARE_SIZE;
+        this.yPosition = this.SQUARE_SIZE * this.boardPosition.row + this.HALF_SQUARE_SIZE;
         return this;
     }
 
@@ -45,15 +44,15 @@ export class Piece {
     }
 
     move(row: number, col: number) {
-        this.row = row;
-        this.col = col;
+        this.boardPosition.row = row;
+        this.boardPosition.col = col;
         this.calcAndSetPosition();
     }
 
     getPosition() {
         return {
-            row: this.row,
-            col: this.col,
+            row: this.boardPosition.row,
+            col: this.boardPosition.col,
             xPosition: this.xPosition,
             yPosition: this.yPosition,
         };

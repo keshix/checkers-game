@@ -77,7 +77,7 @@ export class Board {
         });
     }
 
-    private swapArrayLocations(piece: Piece, moveRow: number, moveCol: number) {
+    private swapPiecePositions(piece: Piece, moveRow: number, moveCol: number) {
         const piecePos = piece.getPosition();
         [this.board[piecePos.row][piecePos.col], this.board[moveRow][moveCol]] = [
             this.board[moveRow][moveCol],
@@ -87,7 +87,7 @@ export class Board {
     }
 
     public move(piece: Piece, row: number, col: number) {
-        this.swapArrayLocations(piece, row, col);
+        this.swapPiecePositions(piece, row, col);
         piece.move(row, col);
 
         if (row === DIMENSIONS.ROWS - 1 || row === 0) {
