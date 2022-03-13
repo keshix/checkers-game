@@ -114,7 +114,7 @@ export class Board {
 
     public markPieceSelected(piece: Piece) {
         this.resetPieceColors();
-        piece.setColor(COLORS.BLUE);
+        piece.setColor(COLORS.GREEN);
     }
 
     public getPiece(row: number, col: number) {
@@ -153,6 +153,28 @@ export class Board {
         return moves;
     }
 
+    private findSkipMoves(
+        lastField: Piece[],
+        step: number,
+        row: number,
+        moves: Map<PiecePosition, Piece[]>,
+        color: number,
+        nextCol: number
+    ) {
+        if (lastField.length > 0) {
+            const nextRow = step === -1 ? _.max([row - 3, 0]) : _.min([row + 3, DIMENSIONS.ROWS]);
+            moves = new Map([
+                ...moves.entries(),
+                ...this.traverse('left', row + step, nextRow, step, color, nextCol - 1, lastField).entries(),
+            ]);
+            moves = new Map([
+                ...moves.entries(),
+                ...this.traverse('right', row + step, nextRow, step, color, nextCol + 1, lastField).entries(),
+            ]);
+        }
+        return moves;
+    }
+
     private traverse(
         direction: string,
         start: number,
@@ -166,11 +188,10 @@ export class Board {
         let lastField: Piece[] = [];
 
         for (const row of _.range(start, stop, step)) {
-            const shouldAbort = (direction === 'left' && nextCol < 0) || (direction === 'right' && nextCol >= DIMENSIONS.COLS);
-
-            if (shouldAbort) break;
+            if ((direction === 'left' && nextCol < 0) || (direction === 'right' && nextCol >= DIMENSIONS.COLS)) break;
 
             const current = this.board[row][nextCol];
+
             if (!current) {
                 if (skippedPieces.length > 0 && lastField.length === 0) {
                     break;
@@ -180,18 +201,8 @@ export class Board {
                     moves.set({ row, col: nextCol }, [...lastField]);
                 }
 
-                if (lastField.length > 0) {
-                    const nextRow = step === -1 ? _.max([row - 3, 0]) : _.min([row + 3, DIMENSIONS.ROWS]);
-                    moves = new Map([
-                        ...moves.entries(),
-                        ...this.traverse('left', row + step, nextRow, step, color, nextCol - 1, lastField).entries(),
-                    ]);
-                    moves = new Map([
-                        ...moves.entries(),
-                        ...this.traverse('right', row + step, nextRow, step, color, nextCol + 1, lastField).entries(),
-                    ]);
-                    break;
-                }
+                moves = this.findSkipMoves(lastField, step, row, moves, color, nextCol);
+                break;
             } else if (current.getInitialColor() === color) {
                 break;
             } else {

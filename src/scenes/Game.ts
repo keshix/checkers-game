@@ -10,13 +10,15 @@ export class CheckersGame extends Phaser.Scene {
     private selectedPiece: Piece | null;
     private turnColor: number;
     private validMoves: Map<PiecePosition, Piece[]>;
+    private SQUARE_SIZE = DIMENSIONS.SQUARE_SIZE();
+    private HALF_SQUARE_SIZE = Math.floor(this.SQUARE_SIZE / 2);
 
     constructor() {
         super('GameScene');
         this.board = new Board();
         this.selectedPiece = null;
         this.turnColor = COLORS.WHITE;
-        this.validMoves = new Map();
+        this.validMoves = new Map<PiecePosition, Piece[]>();
     }
 
     preload() {
@@ -34,6 +36,7 @@ export class CheckersGame extends Phaser.Scene {
 
     update() {
         this.board.drawBoard(this);
+        this.drawValidMoves(this.validMoves);
         this.checkWinnerAndShow();
     }
 
@@ -64,8 +67,8 @@ export class CheckersGame extends Phaser.Scene {
 
     private isMoveInValidMoves(piecePos: PiecePosition) {
         let isValidMove = false;
-        this.validMoves.forEach((value, key) => {
-            if (_.isEqual(key, piecePos)) {
+        this.validMoves.forEach((skippedPieces, positionOnBoard) => {
+            if (_.isEqual(positionOnBoard, piecePos)) {
                 isValidMove = true;
             }
         });
@@ -74,8 +77,8 @@ export class CheckersGame extends Phaser.Scene {
 
     private findSkippedPieces(piecePos: PiecePosition) {
         let skippedPieces: Piece[] = [];
-        this.validMoves.forEach((pieces, key) => {
-            if (_.isEqual(key, piecePos)) {
+        this.validMoves.forEach((pieces, positionOnBoard) => {
+            if (_.isEqual(positionOnBoard, piecePos)) {
                 skippedPieces = pieces;
             }
         });
@@ -112,5 +115,16 @@ export class CheckersGame extends Phaser.Scene {
             const winnerImage = color === COLORS.BLACK ? 'black-wins' : 'white-wins';
             this.add.sprite(this.scale.width / 2, this.scale.height / 2, winnerImage);
         }
+    }
+
+    private drawValidMoves(moves: Map<PiecePosition, Piece[]>) {
+        moves.forEach((skippedPieces, positionOnBoard) => {
+            this.add.circle(
+                positionOnBoard.col * this.SQUARE_SIZE + this.HALF_SQUARE_SIZE,
+                positionOnBoard.row * this.SQUARE_SIZE + this.HALF_SQUARE_SIZE,
+                15,
+                COLORS.GREEN
+            );
+        });
     }
 }
