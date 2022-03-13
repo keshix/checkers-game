@@ -1,10 +1,12 @@
 # Checkers Game
 
- <img align="center" src="https://i.imgur.com/6lcIxDs.png" alt="header" width="500"/>
+<img align="center" src="assets/tech-stack.png" alt="tech stack" width="500"/>
 
 This is a classic checkers game, running on [Phaser 3](https://github.com/photonstorm/phaser).
 
 I used [TypeScript](https://www.typescriptlang.org/) and [Rollup](https://rollupjs.org) with ⚡️ lightning fast HMR through [Vite](https://vitejs.dev/).
+
+<img align="center" src="assets/screenshot.png" alt="screenshot" width="500"/>
 
 ## Available Commands
 
