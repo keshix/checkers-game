@@ -2,9 +2,12 @@
 Thumbs.db
 .DS_Store
 .vscode
+.idea
+*.iml
 
 # Vendors
 node_modules/
+coverage
 
 # Build
 dist

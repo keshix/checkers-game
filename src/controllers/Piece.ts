@@ -9,13 +9,13 @@ export class Piece {
 
     private boardPosition: PiecePosition;
     private color: number;
-    private initialColor: number;
+    private readonly initialColor: number;
     private isKing: boolean;
     private xPosition: number;
     private yPosition: number;
 
     constructor(row: number, col: number, color: number) {
-        this.boardPosition = {row, col};
+        this.boardPosition = { row, col };
         this.color = color;
         this.initialColor = color;
         this.isKing = false;
@@ -41,6 +41,7 @@ export class Piece {
         if (this.isKing) {
             scene.add.sprite(this.xPosition, this.yPosition, 'crown');
         }
+        return scene;
     }
 
     move(row: number, col: number) {

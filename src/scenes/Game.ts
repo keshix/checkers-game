@@ -29,7 +29,7 @@ export class CheckersGame extends Phaser.Scene {
 
     create() {
         this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-            const { row, col } = this.getColAndRowFromMousePos(pointer.downX, pointer.downY);
+            const { row, col } = CheckersGame.getColAndRowFromMousePos(pointer.downX, pointer.downY);
             this.selectOrMovePiece(row, col);
         });
     }
@@ -40,7 +40,7 @@ export class CheckersGame extends Phaser.Scene {
         this.checkWinnerAndShow();
     }
 
-    private getColAndRowFromMousePos(xPos: number, yPos: number) {
+    private static getColAndRowFromMousePos(xPos: number, yPos: number) {
         const row = Math.floor(yPos / DIMENSIONS.SQUARE_SIZE());
         const col = Math.floor(xPos / DIMENSIONS.SQUARE_SIZE());
         return { row, col };

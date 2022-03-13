@@ -1,8 +1,8 @@
+import { max, min, range } from 'lodash';
 import { Scene } from 'phaser';
 import { COLORS, DIMENSIONS } from '../constants';
-import { Piece } from './Piece';
-import _, { last } from 'lodash';
 import { PiecePosition } from '../types/PiecePosition';
+import { Piece } from './Piece';
 
 export class Board {
     private board: (Piece | null)[][];
@@ -30,7 +30,7 @@ export class Board {
         const SQUARE_SIZE = DIMENSIONS.SQUARE_SIZE();
 
         this.rows.map((row) => {
-            _.range(row % 2, DIMENSIONS.COLS, 2).map((col) => {
+            range(row % 2, DIMENSIONS.COLS, 2).map((col) => {
                 scene.add
                     .rectangle(row * SQUARE_SIZE, col * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, COLORS.LIGHT_BROWN)
                     .setOrigin(0, 0);
@@ -132,21 +132,21 @@ export class Board {
         if (pieceColor === COLORS.BLACK || piece.getIsKing()) {
             moves = new Map([
                 ...moves.entries(),
-                ...this.traverse('left', row - 1, _.max([row - 3, -1]), -1, pieceColor, left).entries(),
+                ...this.traverse('left', row - 1, max([row - 3, -1]), -1, pieceColor, left).entries(),
             ]);
             moves = new Map([
                 ...moves.entries(),
-                ...this.traverse('right', row - 1, _.max([row - 3, -1]), -1, pieceColor, right).entries(),
+                ...this.traverse('right', row - 1, max([row - 3, -1]), -1, pieceColor, right).entries(),
             ]);
         }
         if (pieceColor === COLORS.WHITE || piece.getIsKing()) {
             moves = new Map([
                 ...moves.entries(),
-                ...this.traverse('left', row + 1, _.min([row + 3, DIMENSIONS.ROWS]), 1, pieceColor, left).entries(),
+                ...this.traverse('left', row + 1, min([row + 3, DIMENSIONS.ROWS]), 1, pieceColor, left).entries(),
             ]);
             moves = new Map([
                 ...moves.entries(),
-                ...this.traverse('right', row + 1, _.min([row + 3, DIMENSIONS.ROWS]), 1, pieceColor, right).entries(),
+                ...this.traverse('right', row + 1, min([row + 3, DIMENSIONS.ROWS]), 1, pieceColor, right).entries(),
             ]);
         }
 
@@ -162,7 +162,7 @@ export class Board {
         nextCol: number
     ) {
         if (lastField.length > 0) {
-            const nextRow = step === -1 ? _.max([row - 3, 0]) : _.min([row + 3, DIMENSIONS.ROWS]);
+            const nextRow = step === -1 ? max([row - 3, 0]) : min([row + 3, DIMENSIONS.ROWS]);
             moves = new Map([
                 ...moves.entries(),
                 ...this.traverse('left', row + step, nextRow, step, color, nextCol - 1, lastField).entries(),
@@ -187,7 +187,7 @@ export class Board {
         let moves = new Map<PiecePosition, Piece[]>();
         let lastField: Piece[] = [];
 
-        for (const row of _.range(start, stop, step)) {
+        for (const row of range(start, stop, step)) {
             if ((direction === 'left' && nextCol < 0) || (direction === 'right' && nextCol >= DIMENSIONS.COLS)) break;
 
             const current = this.board[row][nextCol];
